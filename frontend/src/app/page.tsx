@@ -1,7 +1,10 @@
+import { InputForm } from "./components/InputForm";
+import styles from "./page.module.css"
+
 export default function Home() {
   return (
-    <main>
-      <h1>AgriConnect</h1>
-    </main>
-  )
+    <div className={styles.page}>
+      <InputForm />
+    </div>
+  );
 }

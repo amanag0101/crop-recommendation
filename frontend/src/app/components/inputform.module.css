@@ -1,0 +1,14 @@
+.input_form .form {
+    border: 1px solid;
+    width: 50vw;
+}
+
+.input_form .form .form_control {
+    display: block;
+    margin-bottom: 16px;
+}
+
+.input_form .form .form_control .input {
+    width: 100%;
+}
+
