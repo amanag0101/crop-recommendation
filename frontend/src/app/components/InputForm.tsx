@@ -20,8 +20,9 @@ import { getWeatherData } from "../utils/WeatherService";
 import { WeatherData } from "../interface/WeatherData";
 import { Month } from "../constants/Month";
 import { getCropData } from "../utils/CropDataService";
+import { CropResult } from "../interface/CropResult";
 
-type InputFormInteface = {
+export type InputFormInteface = {
   startMonth: number;
   endMonth: number;
   temperature: number;
@@ -48,11 +49,13 @@ export const InputForm = () => {
     k: 0.0,
     ph: 0.0,
   });
+  const [result, setResult] = useState<string>("");
 
   // get user's current location
   useEffect(() => {
     getCurrentLocation()
       .then((position) => {
+        console.log(position);
         if (position instanceof GeolocationPosition)
           setCurrentLocation(position);
       })
@@ -90,16 +93,16 @@ export const InputForm = () => {
     });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     console.log(values);
-    getCropData();
+    const data = getCropData(values);
+    setResult(await data)
   };
 
   return (
     <div className={styles.input_form}>
       <div className={styles.form} style={{ padding: "16px" }}>
-        <FormControl className={styles.form_control}>
-          {/* <InputLabel htmlFor="startMonth">Start Month</InputLabel> */}
+        {/* <FormControl className={styles.form_control}>
           <Select
             className={styles.input}
             id="startMonth"
@@ -118,7 +121,6 @@ export const InputForm = () => {
           </Select>
         </FormControl>
         <FormControl className={styles.form_control}>
-          {/* <InputLabel htmlFor="endMonth">End Month</InputLabel> */}
           <Select
             className={styles.input}
             id="endMonth"
@@ -135,9 +137,9 @@ export const InputForm = () => {
                 </MenuItem>
               ))}
           </Select>
-        </FormControl>
+        </FormControl> */}
 
-        {/* <FormControl className={styles.form_control} sx={{ marginTop: "16px" }}>
+        <FormControl className={styles.form_control} sx={{ marginTop: "16px" }}>
           <InputLabel htmlFor="temperature">Temperature</InputLabel>
           <Input
             className={styles.input}
@@ -169,7 +171,7 @@ export const InputForm = () => {
             value={values.rainfall}
             onChange={handleChange}
           />
-        </FormControl> */}
+        </FormControl>
         <FormControl className={styles.form_control}>
           <InputLabel htmlFor="n">N</InputLabel>
           <Input
@@ -244,6 +246,12 @@ export const InputForm = () => {
               />
             </RadioGroup>
           </FormControl>
+        </div>
+
+        <div>
+          <p>
+            {`You should grow ${result}`}
+          </p>
         </div>
       </div>
     </div>
