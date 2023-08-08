@@ -14,6 +14,7 @@ export const getCropData = async (formData: InputFormInteface) => {
     end_month: 12,
     humidity: formData.humidity,
     temperature: formData.temperature,
+    rainfall: formData.rainfall
   };
   const headers = { "Content-Type": "application/json" };
 
