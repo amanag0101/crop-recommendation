@@ -1,3 +1,7 @@
+.input_form {
+    display: flex;
+}
+
 .input_form .form {
     border: 1px solid;
     width: 50vw;
@@ -10,5 +14,11 @@
 
 .input_form .form .form_control .input {
     width: 100%;
+}
+
+.input_form .options .container {
+    border: 1px solid;
+    border-left: 0;
+    padding: 8px;
 }
 

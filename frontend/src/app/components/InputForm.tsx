@@ -4,9 +4,14 @@ import React, { ChangeEvent, useEffect, useState } from "react";
 import {
   Button,
   FormControl,
+  FormControlLabel,
+  FormGroup,
+  FormLabel,
   Input,
   InputLabel,
   MenuItem,
+  Radio,
+  RadioGroup,
   Select,
 } from "@mui/material";
 import styles from "./inputform.module.css";
@@ -14,6 +19,7 @@ import { getCurrentLocation } from "../utils/LocationService";
 import { getWeatherData } from "../utils/WeatherService";
 import { WeatherData } from "../interface/WeatherData";
 import { Month } from "../constants/Month";
+import { getCropData } from "../utils/CropDataService";
 
 type InputFormInteface = {
   startMonth: number;
@@ -30,6 +36,7 @@ type InputFormInteface = {
 export const InputForm = () => {
   const [currentLocation, setCurrentLocation] = useState<GeolocationPosition>();
   const [weatherData, setWeathreData] = useState<WeatherData>();
+  const [inputType, setInputType] = useState<string>("manual");
   const [values, setValues] = useState<InputFormInteface>({
     startMonth: 1,
     endMonth: 3,
@@ -85,6 +92,7 @@ export const InputForm = () => {
 
   const handleSubmit = () => {
     console.log(values);
+    getCropData();
   };
 
   return (
@@ -129,7 +137,7 @@ export const InputForm = () => {
           </Select>
         </FormControl>
 
-        <FormControl className={styles.form_control} sx={{ marginTop: "16px" }}>
+        {/* <FormControl className={styles.form_control} sx={{ marginTop: "16px" }}>
           <InputLabel htmlFor="temperature">Temperature</InputLabel>
           <Input
             className={styles.input}
@@ -161,7 +169,7 @@ export const InputForm = () => {
             value={values.rainfall}
             onChange={handleChange}
           />
-        </FormControl>
+        </FormControl> */}
         <FormControl className={styles.form_control}>
           <InputLabel htmlFor="n">N</InputLabel>
           <Input
@@ -213,6 +221,30 @@ export const InputForm = () => {
         >
           Submit
         </Button>
+      </div>
+
+      <div className={styles.options}>
+        <div className={styles.container}>
+          <FormControl>
+            <RadioGroup
+              aria-labelledby="demo-controlled-radio-buttons-group"
+              name="controlled-radio-buttons-group"
+              value={inputType}
+              onChange={(e) => setInputType(e.target.value)}
+            >
+              <FormControlLabel
+                value="manual"
+                control={<Radio />}
+                label="Manual Input"
+              />
+              <FormControlLabel
+                value="automatic"
+                control={<Radio />}
+                label="Automatic Input"
+              />
+            </RadioGroup>
+          </FormControl>
+        </div>
       </div>
     </div>
   );
