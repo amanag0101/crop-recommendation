@@ -1,13 +1,11 @@
 "use client";
 
-import React, { ChangeEvent, useState } from "react";
-import {
-  Button,
-  FormControl,
-  Input,
-  InputLabel
-} from "@mui/material";
+import React, { ChangeEvent, useEffect, useState } from "react";
+import { Button, FormControl, Input, InputLabel } from "@mui/material";
 import styles from "./inputform.module.css";
+import { getCurrentLocation } from "../utils/LocationService";
+import { getWeatherData } from "../utils/WeatherService";
+import { WeatherData } from "../interface/WeatherData";
 
 type InputFormInteface = {
   temperature: number;
@@ -20,6 +18,8 @@ type InputFormInteface = {
 };
 
 export const InputForm = () => {
+  const [currentLocation, setCurrentLocation] = useState<GeolocationPosition>();
+  const [weatherData, setWeathreData] = useState<WeatherData>();
   const [values, setValues] = useState<InputFormInteface>({
     temperature: 0,
     humidity: 0,
@@ -29,6 +29,37 @@ export const InputForm = () => {
     k: 0.0,
     ph: 0.0,
   });
+
+  // get user's current location
+  useEffect(() => {
+    getCurrentLocation()
+      .then((position) => {
+        if (position instanceof GeolocationPosition)
+          setCurrentLocation(position);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
+  // based on the user's location get the weather data
+  useEffect(() => {
+    if (currentLocation !== undefined)
+      getWeatherData(
+        currentLocation.coords.latitude,
+        currentLocation.coords.longitude
+      ).then((data) => setWeathreData(data as unknown as WeatherData));
+  }, [currentLocation]);
+
+  useEffect(() => {
+    if (weatherData !== undefined) {
+      setValues((prevState) => ({
+        ...prevState,
+        temperature: weatherData.current.temp_c,
+        humidity: weatherData.humidity,
+      }));
+    }
+  }, [weatherData]);
 
   const handleChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
