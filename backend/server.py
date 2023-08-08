@@ -25,66 +25,64 @@ def members1():
         P = int(request.json['P'])
         K = int(request.json['K'])
         ph = float(request.json['Ph'])
-        humidity = float(request.json['humidity'])
-        temperature = float(request.json['temperature'])
-        state = request.json['state']
-        district = request.json['district']
-        start_month = int(request.json['start_month'])
-        end_month = int(request.json['end_month'])
+        # state = request.json['state']
+        # district = request.json['district']
+        # start_month = int(request.json['start_month'])
+        # end_month = int(request.json['end_month'])
+        temperature = int(request.json['temperature'])
+        humidity = int(request.json['humidity'])
+        avg_rainfall = int(request.json['rainfall'])
+        
     except:
         return jsonify({"crop": 'failed to get info', "data": request.json})
 
-    temprature = 20
-    humidity = 30
-    
-    x = requests.get('https://api.mapbox.com/geocoding/v5/mapbox.places/'+ district + ' ' + state + '.json?access_token=pk.eyJ1Ijoic2FpZ29ydGk4MSIsImEiOiJja3ZqY2M5cmYydXd2MnZwZ2VoZzl1ejNkIn0.CupGYvpb_LNtDgp7b-rZJg')
+    # x = requests.get('https://api.mapbox.com/geocoding/v5/mapbox.places/'+ district + ' ' + state + '.json?access_token=pk.eyJ1Ijoic2FpZ29ydGk4MSIsImEiOiJja3ZqY2M5cmYydXd2MnZwZ2VoZzl1ejNkIn0.CupGYvpb_LNtDgp7b-rZJg')
 
-    coordinates =  x.json()['features'][0]['center']
+    # coordinates =  x.json()['features'][0]['center']
 
-    y = requests.get('https://api.openweathermap.org/data/2.5/weather?lat='+ str(coordinates[1]) +'&lon='+ str(coordinates[0]) +'&appid=8d51fbf3b5ad7f3cc65ba0ea07220782')
-    print(y.json())
-    humidity = y.json()['main']['humidity']
-    temprature = y.json()['main']['temp']
+    # y = requests.get('https://api.openweathermap.org/data/2.5/weather?lat='+ str(coordinates[1]) +'&lon='+ str(coordinates[0]) +'&appid=8d51fbf3b5ad7f3cc65ba0ea07220782')
+    # humidity = y.json()['main']['humidity']
+    # temperature = y.json()['main']['temp']
 
-    df=pd.read_csv("rainfall.csv")
-    # # q = df.query('STATE_UT_NAME=="ANDAMAN And NICOBAR ISLANDS" and DISTRICT == "NICOBAR"', inplace = False)
-    q = df.query('STATE_UT_NAME == "{}" and DISTRICT == "{}"'.format(state, district), inplace = False)
-    print(q)
-    total=0
-    # l=12
+    # df=pd.read_csv("rainfall.csv")
+    # # # q = df.query('STATE_UT_NAME=="ANDAMAN And NICOBAR ISLANDS" and DISTRICT == "NICOBAR"', inplace = False)
+    # q = df.query('STATE_UT_NAME == "{}" and DISTRICT == "{}"'.format(state, district), inplace = False)
+    # print(q)
+    # total=0
+    # # l=12
 
-    if start_month <= end_month: 
-        l=(end_month-start_month)+1
+    # if start_month <= end_month: 
+    #     l=(end_month-start_month)+1
 
-        for i in range(start_month, end_month+1):
-            try:
-                total+=int(q[i:i+1].value)
-            except:
-                total-=1
+    #     for i in range(start_month, end_month+1):
+    #         try:
+    #             total+=int(q[i:i+1].value)
+    #         except:
+    #             total-=1
             
-    elif start_month > end_month:
-        l = (end_month+12) - start_month + 1
+    # elif start_month > end_month:
+    #     l = (end_month+12) - start_month + 1
         
-        for i in range(start_month, 13):
-            try:
-                total+=int(q[i:i+1].value)
-            except:
-                total-=1
+    #     for i in range(start_month, 13):
+    #         try:
+    #             total+=int(q[i:i+1].value)
+    #         except:
+    #             total-=1
         
-        for i in range(1, end_month+1):
-            try:
-                total+=int(q[i:i+1].value)
-            except:
-                total-=1
+    #     for i in range(1, end_month+1):
+    #         try:
+    #             total+=int(q[i:i+1].value)
+    #         except:
+    #             total-=1
 
-    avg_rainfall = total/l
+    # avg_rainfall = total/l
 
-    data = np.array([[N, P, K, temprature, humidity, ph, avg_rainfall]])
+    data = np.array([[N, P, K, temperature, humidity, ph, avg_rainfall]])
     my_prediction = crop_recommendation_model.predict(data)
     final_prediction = my_prediction[0]
     print(final_prediction)
 
-    return jsonify({"crop": final_prediction, "data": y.json()['main'], 'l':l})
+    return jsonify({"crop": final_prediction,})
 
 
 

@@ -10,7 +10,7 @@ data = {
     'state': 'Tamil Nadu',
     'district': 'KATPADI',
     'start_month': 1,
-    'end_month': 12
+    'end_month': 6
 }
 headers = {'Content-type': 'application/json'}
 
