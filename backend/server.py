@@ -29,9 +29,10 @@ def members1():
         # district = request.json['district']
         # start_month = int(request.json['start_month'])
         # end_month = int(request.json['end_month'])
-        temperature = int(request.json['temperature'])
-        humidity = int(request.json['humidity'])
-        avg_rainfall = int(request.json['rainfall'])
+        temperature = float(request.json['temperature'])
+        humidity = float(request.json['humidity'])
+        avg_rainfall = float(request.json['rainfall'])
+        print(avg_rainfall)
         
     except:
         return jsonify({"crop": 'failed to get info', "data": request.json})
