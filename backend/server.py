@@ -31,7 +31,6 @@ def members1():
         district = request.json['district']
         start_month = int(request.json['start_month'])
         end_month = int(request.json['end_month'])
-        
     except:
         return jsonify({"crop": 'failed to get info', "data": request.json})
 
@@ -44,8 +43,8 @@ def members1():
 
     y = requests.get('https://api.openweathermap.org/data/2.5/weather?lat='+ str(coordinates[1]) +'&lon='+ str(coordinates[0]) +'&appid=8d51fbf3b5ad7f3cc65ba0ea07220782')
     print(y.json())
-    # humidity = y.json()['main']['humidity']
-    # # temprature = y.json()['main']['temp']
+    humidity = y.json()['main']['humidity']
+    temprature = y.json()['main']['temp']
 
     df=pd.read_csv("rainfall.csv")
     # # q = df.query('STATE_UT_NAME=="ANDAMAN And NICOBAR ISLANDS" and DISTRICT == "NICOBAR"', inplace = False)

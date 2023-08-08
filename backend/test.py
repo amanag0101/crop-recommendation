@@ -8,7 +8,7 @@ data = {
     'K': 30,
     'Ph': 6.5,
     'state': 'Tamil Nadu',
-    'district': 'Katpadi',
+    'district': 'KATPADI',
     'start_month': 1,
     'end_month': 12
 }
