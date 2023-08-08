@@ -1,13 +1,23 @@
 "use client";
 
 import React, { ChangeEvent, useEffect, useState } from "react";
-import { Button, FormControl, Input, InputLabel } from "@mui/material";
+import {
+  Button,
+  FormControl,
+  Input,
+  InputLabel,
+  MenuItem,
+  Select,
+} from "@mui/material";
 import styles from "./inputform.module.css";
 import { getCurrentLocation } from "../utils/LocationService";
 import { getWeatherData } from "../utils/WeatherService";
 import { WeatherData } from "../interface/WeatherData";
+import { Month } from "../constants/Month";
 
 type InputFormInteface = {
+  startMonth: number;
+  endMonth: number;
   temperature: number;
   humidity: number;
   rainfall: number;
@@ -21,6 +31,8 @@ export const InputForm = () => {
   const [currentLocation, setCurrentLocation] = useState<GeolocationPosition>();
   const [weatherData, setWeathreData] = useState<WeatherData>();
   const [values, setValues] = useState<InputFormInteface>({
+    startMonth: 1,
+    endMonth: 3,
     temperature: 0,
     humidity: 0,
     rainfall: 0,
@@ -51,6 +63,7 @@ export const InputForm = () => {
       ).then((data) => setWeathreData(data as unknown as WeatherData));
   }, [currentLocation]);
 
+  // set the weather data
   useEffect(() => {
     if (weatherData !== undefined) {
       setValues((prevState) => ({
@@ -77,6 +90,45 @@ export const InputForm = () => {
   return (
     <div className={styles.input_form}>
       <div className={styles.form} style={{ padding: "16px" }}>
+        <FormControl className={styles.form_control}>
+          {/* <InputLabel htmlFor="startMonth">Start Month</InputLabel> */}
+          <Select
+            className={styles.input}
+            id="startMonth"
+            name="startMonth"
+            label="Start Month"
+            value={values.startMonth}
+            onChange={handleChange}
+          >
+            {Object.values(Month)
+              .filter((value) => typeof value === "string")
+              .map((monthName, index) => (
+                <MenuItem key={monthName} value={index + 1}>
+                  {monthName}
+                </MenuItem>
+              ))}
+          </Select>
+        </FormControl>
+        <FormControl className={styles.form_control}>
+          {/* <InputLabel htmlFor="endMonth">End Month</InputLabel> */}
+          <Select
+            className={styles.input}
+            id="endMonth"
+            name="endMonth"
+            label="Start Month"
+            value={values.endMonth}
+            onChange={handleChange}
+          >
+            {Object.values(Month)
+              .filter((value) => typeof value === "string")
+              .map((monthName, index) => (
+                <MenuItem key={monthName} value={index + 1}>
+                  {monthName}
+                </MenuItem>
+              ))}
+          </Select>
+        </FormControl>
+
         <FormControl className={styles.form_control} sx={{ marginTop: "16px" }}>
           <InputLabel htmlFor="temperature">Temperature</InputLabel>
           <Input
