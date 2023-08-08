@@ -43,7 +43,7 @@ def members1():
     coordinates =  x.json()['features'][0]['center']
 
     y = requests.get('https://api.openweathermap.org/data/2.5/weather?lat='+ str(coordinates[1]) +'&lon='+ str(coordinates[0]) +'&appid=8d51fbf3b5ad7f3cc65ba0ea07220782')
-    print(y.json)
+    print(y.json())
     # humidity = y.json()['main']['humidity']
     # # temprature = y.json()['main']['temp']
 
